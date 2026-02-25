@@ -1,0 +1,42 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install, build, and upload
+        uses: withastro/action@v5
+        with:
+          path: .
+          node-version: 20
+        env:
+          PUBLIC_EMAIL: ${{ secrets.PUBLIC_EMAIL }}
+          PUBLIC_GITHUB_URL: ${{ secrets.PUBLIC_GITHUB_URL }}
+          PUBLIC_LINKEDIN_URL: ${{ secrets.PUBLIC_LINKEDIN_URL }}
+          PUBLIC_XOR_KEY: ${{ secrets.PUBLIC_XOR_KEY }}
+          PUBLIC_CV: ${{ secrets.PUBLIC_CV }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
