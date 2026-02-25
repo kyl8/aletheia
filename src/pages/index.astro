@@ -1,4 +1,7 @@
 ---
+// AI VOC ME PERGUNTA PQ VC NAO USOU i18n routing do astro igual no portfolio?
+// pq ia dar muito trabalho pra um ganho besta e pra mim ia ser overengineering
+
 import '../styles/global.css';
 import Main from '../components/cv/main.tsx';
 import { labels } from '../utils/i18n';
@@ -64,6 +67,9 @@ import { labels } from '../utils/i18n';
           <h1 id="app-title" class="text-4xl md:text-5xl font-press-start pixel-shadow-text bg-gradient-to-b from-indigo-400 to-indigo-600 bg-clip-text text-transparent uppercase py-4">
             {labels.appName}
           </h1>
+          <p id="app-subtitle" class="text-lg md:text-xl font-silkscreen text-zinc-700 dark:text-zinc-300">
+            {labels.subtitle}
+          </p>
           <div class="flex justify-center gap-3 mt-4">
             <div class="h-4 w-4 bg-indigo-500 animate-bounce border-2 border-zinc-900 dark:border-zinc-200"></div>
             <div class="h-4 w-4 bg-purple-500 animate-bounce [animation-delay:0.2s] border-2 border-zinc-900 dark:border-zinc-200"></div>
