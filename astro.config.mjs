@@ -5,6 +5,7 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://aletheia.kyl8.dev',
   server: {
     headers: {
       "Cross-Origin-Opener-Policy": "same-origin",
