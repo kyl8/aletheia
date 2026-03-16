@@ -7,30 +7,36 @@ if (env.backends?.onnx?.wasm) {
   env.backends.onnx.wasm.numThreads = Math.max(1, (navigator.hardwareConcurrency || 1) - 1);
 }
 
-let pipe: any = null;
-let currentDevice: string = "";
-let currentModel: string = "";
+class PipelineSingleton {
+  static model: string = "";
+  static device: string = "";
+  static instance: any = null;
+
+  static async getInstance(model: string, device: string, progress_callback: any) {
+    if (this.instance !== null && (this.model !== model || this.device !== device)) {
+      if (typeof this.instance.dispose === 'function') await this.instance.dispose();
+      this.instance = null;
+    }
+    this.model = model;
+    this.device = device;
+    if (this.instance === null) {
+      this.instance = await pipeline("text-generation", model, {
+        device: device as any,
+        dtype: "q4",
+        progress_callback
+      });
+    }
+    return this.instance;
+  }
+}
 
 self.onmessage = async (e) => {
   const { text, device, model } = e.data;
 
   try {
-    if (pipe && (currentDevice !== device || currentModel !== model)) {
-      if (typeof pipe.dispose === 'function') await pipe.dispose();
-      pipe = null; 
-    }
-    currentDevice = device;
-    currentModel = model;
-
-    if (!pipe) {
-      pipe = await pipeline("text-generation", model, {
-        device: device, 
-        dtype: "q4",
-        progress_callback: (data: any) => {
-          self.postMessage(data);
-        }
-      });
-    }
+    const pipe = await PipelineSingleton.getInstance(model, device, (data: any) => {
+      self.postMessage(data);
+    });
 
     const streamer = new TextStreamer(pipe.tokenizer, {
       skip_prompt: true,

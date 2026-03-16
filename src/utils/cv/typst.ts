@@ -140,7 +140,11 @@ export async function compileTypstToPdf(data: ResumeData, lang: Lang): Promise<s
   
   try {
     const pdfBytes = await $typst.pdf({ mainContent: content });
-    const blob = new Blob([pdfBytes], { type: "application/pdf" });
+    if (!pdfBytes) {
+      throw new Error("Typst renderer returned empty PDF");
+    }
+    const normalizedPdfBytes = new Uint8Array(pdfBytes);
+    const blob = new Blob([normalizedPdfBytes], { type: "application/pdf" });
     return URL.createObjectURL(blob);
   } catch (err) {
     console.error("Erro ao compilar PDF:", err);

@@ -7,6 +7,8 @@ export interface ExperienceItem {
   empresa: string;
   periodo: string;
   descricao: string;
+  local?: string;
+  tipo?: string;
 }
 
 export interface EducationItem {
