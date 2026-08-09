@@ -1,6 +1,8 @@
 import type { ResumeData } from "./parser";
 import { type Lang, t } from "../i18n";
 import { $typst } from "@myriaddreamin/typst.ts";
+import compilerModule from "@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm?url";
+import rendererModule from "@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm?url";
 
 export function generateTypstSource(data: ResumeData, lang: Lang): string {
   const esc = (s: string) => s?.replace(/[#$@\\]/g, (c) => `\\${c}`) || "";
@@ -121,15 +123,13 @@ let isCompilerInitialized = false;
 
 async function initTypstCompiler() {
   if (isCompilerInitialized) return;
-  
+
   await $typst.setCompilerInitOptions({
-    getModule: () =>
-      'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-web-compiler/pkg/typst_ts_web_compiler_bg.wasm',
+    getModule: () => compilerModule,
   });
 
   await $typst.setRendererInitOptions({
-    getModule: () =>
-      'https://cdn.jsdelivr.net/npm/@myriaddreamin/typst-ts-renderer/pkg/typst_ts_renderer_bg.wasm',
+    getModule: () => rendererModule,
   });
   isCompilerInitialized = true;
 }
@@ -148,7 +148,7 @@ export async function compileTypstToPdf(data: ResumeData, lang: Lang): Promise<s
     return URL.createObjectURL(blob);
   } catch (err) {
     console.error("Erro ao compilar PDF:", err);
-    throw new Error("Erro de compilação. Verifique a conexão com o CDN de fontes e WASM.");
+    throw new Error("Erro de compilação do Typst.");
   }
 }
 
