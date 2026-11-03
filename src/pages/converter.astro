@@ -1,0 +1,7 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Converter from '../components/Converter.svelte';
+---
+<BaseLayout title="Conversor local" description="Converta imagens e dados no navegador, gratuitamente.">
+  <Converter client:only="svelte" />
+</BaseLayout>
