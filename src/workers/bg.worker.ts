@@ -14,10 +14,10 @@ self.onmessage=async(event:MessageEvent<{image:string}>)=>{
       };
       report({status:'loading',message:'Baixando modelo de remoção local (primeira utilização).'});
       try {
-        runner=await pipeline('image-segmentation','briaai/RMBG-1.4',{...options,device:'webgpu'}) as typeof runner;
+        runner=await pipeline('image-segmentation','briaai/RMBG-1.4',{...options,device:'webgpu'}) as unknown as (data: string) => Promise<any[]>;
       } catch {
         report({status:'loading',message:'Utilizando execução WASM.'});
-        runner=await pipeline('image-segmentation','briaai/RMBG-1.4',{...options,device:'wasm'}) as typeof runner;
+        runner=await pipeline('image-segmentation','briaai/RMBG-1.4',{...options,device:'wasm'}) as unknown as (data: string) => Promise<any[]>;
       }
     }
     report({status:'processing',message:'Calculando máscara de recorte...'});
