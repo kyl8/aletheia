@@ -1,25 +1,15 @@
 @import "tailwindcss";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root { color-scheme: light; --bg: #f5f5f4; --panel: #ffffff; --text: #18181b; --muted: #52525b; --edge: #27272a; --accent: #4f46e5; --shadow: #27272a; }
-html.dark { color-scheme: dark; --bg: #0c0d13; --panel: #181a23; --text: #f4f4f5; --muted: #b5b5c3; --edge: #525568; --accent: #9ea5ff; --shadow: #4c5170; }
-html { scroll-behavior: smooth; }
-body { margin: 0; color: var(--text); background: var(--bg); font-family: 'Inter', system-ui, sans-serif; }
-button, input, select, textarea { font: inherit; }
-button { cursor: pointer; }
-button:disabled { cursor: not-allowed; opacity: .55; }
-:focus-visible { outline: 3px solid #818cf8; outline-offset: 3px; }
-.pixel { border: 2px solid var(--edge); box-shadow: 4px 4px 0 var(--shadow); background: var(--panel); }
-.pixel-button { border: 2px solid var(--edge); box-shadow: 3px 3px 0 var(--shadow); font-family: 'Silkscreen', monospace; font-size: .8rem; font-weight: 600; transition: transform .12s,box-shadow .12s; }
-.pixel-button:not(:disabled):active { transform: translate(3px,3px); box-shadow: 0 0 0 transparent; }
-.label { font-family: 'Silkscreen', monospace; font-size: .68rem; letter-spacing: .02em; text-transform: uppercase; display: block; margin-bottom: .4rem; }
-.field { width: 100%; min-width: 0; border: 2px solid var(--edge); border-radius: 0; background: var(--panel); color: var(--text); padding: .65rem .8rem; }
-.field::placeholder { color: var(--muted); opacity:.7; }
-.muted { color: var(--muted); }
-.section-heading { font-family: 'Silkscreen', monospace; font-size: .96rem; line-height: 1.6; }
-.tool-card { background: var(--panel); border: 2px solid var(--edge); box-shadow: 5px 5px 0 var(--shadow); display:flex; flex-direction:column; transition: transform .16s,box-shadow .16s; }
-.tool-card:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--shadow); }
-.tool-card:focus-visible { outline:3px solid var(--accent); }
-.progress-track { height: 9px; background: #d4d4d8; border: 1px solid var(--edge); }
-.progress-fill { height:100%; background:#818cf8; transition:width .2s; }
-@media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior:auto !important; transition:none !important; animation:none !important; } }
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-zinc-300 dark:bg-zinc-700 rounded-full;
+  }
+}
